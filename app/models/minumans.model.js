@@ -54,7 +54,7 @@ Minuman.getAll = result => {
 
 Minuman.updateById = (id, minuman, result) => {
   sql.query(
-    "UPDATE minumans SET uraian_minuman = ?, kategori_minuman = ?, WHERE kd_minuman = ?",
+    "UPDATE minumans SET uraian_minuman = ?, kategori_minuman = ? WHERE kd_minuman = ?",
     [minuman.uraian_minuman, minuman.kategori_minuman, id],
     (err, res) => {
       if (err) {
