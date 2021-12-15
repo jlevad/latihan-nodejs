@@ -2,8 +2,21 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
+const cors = require("cors");
 
 const app = express();
+app.use(cors());
+
+const whiteList = ['*'];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whiteList.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
 
 const swaggerDefinition = {
   info: {
@@ -40,7 +53,7 @@ const options = {
 }
 
 const swaggerSpec = swaggerJsdoc(options);
-app.get('/swagger.json', function (req, res) {
+app.get('/swagger.json', cors(corsOptions), function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   res.send(swaggerSpec);
 });
@@ -53,13 +66,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // a route for home page
-app.get("/home", (req, res) => {
+app.get("/home", cors(corsOptions), (req, res) => {
   res.json({ message: "NodeJs CRUD Application" });
 });
 
 require("./app/routes/minuman.routes.js")(app);
 
 // setting port to 3000, & listening for requests http request.
-app.listen(8080, () => {
-  console.log("Server is running on port 8080.");
+app.listen(3000, () => {
+  console.log("Server is running on port 3000.");
 });
