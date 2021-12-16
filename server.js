@@ -5,12 +5,10 @@ const swaggerUi = require("swagger-ui-express");
 const cors = require("cors");
 
 const app = express();
-app.use(cors());
 
-const whiteList = ['*'];
 const corsOptions = {
   origin: function (origin, callback) {
-    if (whiteList.indexOf(origin) !== -1) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
       callback(null, true)
     } else {
       callback(new Error('Not allowed by CORS'))
@@ -24,7 +22,7 @@ const swaggerDefinition = {
     version: '1.0.0',
     description: 'Endpoints to test the minumans routes',
   },
-  host: 'localhost:8080',
+  host: 'localhost:3000',
   basePath: '/',
   // definitions: {
   //   users: {
@@ -51,12 +49,14 @@ const options = {
   swaggerDefinition,
   apis: ['./app/routes/*.js']
 }
+app.use(cors());
 
 const swaggerSpec = swaggerJsdoc(options);
 app.get('/swagger.json', cors(corsOptions), function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   res.send(swaggerSpec);
 });
+
 
 app.use('/ngomb-minumans-service', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // parse requests of content-type: application/json
