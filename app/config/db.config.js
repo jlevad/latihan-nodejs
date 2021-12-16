@@ -1,6 +1,6 @@
 module.exports = {
   HOST: "localhost",
-  USER: "mifta",
+  USER: "root",
   PASSWORD: "",
-  DB: "test"
+  DB: "testnode"
 };
